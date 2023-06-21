@@ -12,8 +12,7 @@ public class Main {
     public static void main(String[] args) {
         String url = "https://en.wikipedia.org/";
         Connection con = Jsoup.connect(url);
-        System.out.println(con);
-       // crawl(1, url, new ArrayList<String>());
+        crawl(1, url, new ArrayList<String>());
     }
 
     private static void crawl(int level, String url, ArrayList<String> visited){
