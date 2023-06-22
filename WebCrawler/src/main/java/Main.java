@@ -36,9 +36,9 @@ public class Main {
             Connection con = Jsoup.connect(url);
             Document doc = con.get();
 
-            if(con.response().statusCode() == 200){
+            if(con.response().statusMessage().equals("OK")){
                 System.out.println("Link: " + url);
-                System.out.println(doc.title());
+                System.out.println(doc.text());
                 v.add(url);
 
                 return doc;
