@@ -1,9 +1,6 @@
 import java.util.ArrayList;
 
 import Jsoup_crawler.Crawler;
-import org.jsoup.Connection;
-import org.jsoup.Jsoup;
-
 
 public class Main {
 
@@ -13,7 +10,7 @@ public class Main {
         url_list.add("https://sk.wikipedia.org/wiki/Po%C4%8D%C3%ADta%C4%8D");
 
         for(String url: url_list) {
-            crawler.crawl(1, url, new ArrayList<String>());
+            crawler.crawl(1, url, new ArrayList<>());
         }
     }
 

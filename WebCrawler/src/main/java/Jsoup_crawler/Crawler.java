@@ -12,7 +12,7 @@ import java.util.Stack;
 public class Crawler {
 
     //metoda na prehladavanie podstranok
-    public static void crawl(int deep, String url, ArrayList<String> visited) {
+    public void crawl(int deep, String url, ArrayList<String> visited) {
         Stack<Caller> stack = new Stack<>();
         stack.push(new Caller(deep, url));
 
@@ -21,10 +21,10 @@ public class Crawler {
             deep = frame.deep();
             url = frame.url();
 
-            Document doc = request(url, visited, deep);
+            Document doc = request(url, visited);
 
 
-                if (doc != null && deep <= 0) {
+                if (doc != null && deep <= 2) {
                     for (Element link : doc.select("a[href]")) {
                         String next_link = link.absUrl("href");
                         if (!visited.contains(next_link)) {
@@ -36,7 +36,7 @@ public class Crawler {
     }
 
     //metoda na overenie, či stránku ide otvoriť
-    private static Document request(String url, ArrayList<String> v, int deep){
+    private Document request(String url, ArrayList<String> v){
         try{
             Connection con = Jsoup.connect(url);
             Document doc = con.get();
