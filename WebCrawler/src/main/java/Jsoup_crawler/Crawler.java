@@ -1,3 +1,5 @@
+package Jsoup_crawler;
+
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -7,50 +9,45 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Stack;
 
-public class Jsoup_crawler {
+public class Crawler {
 
-    public static void crawl(int level, String url, ArrayList<String> visited) {
+    //metoda na prehladavanie podstranok
+    public static void crawl(int deep, String url, ArrayList<String> visited) {
         Stack<Caller> stack = new Stack<>();
-        stack.push(new Caller(level, url));
+        stack.push(new Caller(deep, url));
 
         while (!stack.isEmpty()) {
             Caller frame = stack.pop();
-            level = frame.level;
-            url = frame.url;
+            deep = frame.deep();
+            url = frame.url();
 
-            if (level <= 1) {
-                Document doc = request(url, visited);
+            Document doc = request(url, visited, deep);
 
-                if (doc != null) {
+
+                if (doc != null && deep <= 0) {
                     for (Element link : doc.select("a[href]")) {
                         String next_link = link.absUrl("href");
                         if (!visited.contains(next_link)) {
-                            stack.push(new Caller(level++, next_link));
+                            stack.push(new Caller(deep++, next_link));
                         }
                     }
                 }
-            }
         }
     }
 
-    private static class Caller {
-        private int level;
-        private String url;
-
-        public Caller(int level, String url) {
-            this.level = level;
-            this.url = url;
-        }
-    }
-
-    private static Document request(String url, ArrayList<String> v){
+    //metoda na overenie, či stránku ide otvoriť
+    private static Document request(String url, ArrayList<String> v, int deep){
         try{
             Connection con = Jsoup.connect(url);
             Document doc = con.get();
 
             if(con.response().statusMessage().equals("OK")){
-                System.out.println("Link danej stranky: " + url);
-                System.out.println(doc.text());
+
+                System.out.println("URL: " + url);
+
+                //vypis obsahu stranky
+                Output.text_output(doc);
+
                 v.add(url);
 
                 return doc;
@@ -63,3 +60,4 @@ public class Jsoup_crawler {
 
     }
 }
+
