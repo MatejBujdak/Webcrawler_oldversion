@@ -4,6 +4,9 @@ import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import com.cybozu.labs.langdetect.DetectorFactory;
+import com.cybozu.labs.langdetect.LangDetectException;
+
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,6 +19,14 @@ public class Crawler {
         Stack<Caller> stack = new Stack<>();
         stack.push(new Caller(deep, url));
 
+        try{
+        DetectorFactory.loadProfile("C:\\Users\\Matej\\OneDrive\\Počítač\\Java_projekty\\Webcrawler\\WebCrawler\\language-detection-master\\language-detection-master\\profiles");
+        } catch (LangDetectException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         while (!stack.isEmpty()) {
             Caller frame = stack.pop();
             deep = frame.deep();
@@ -24,7 +35,7 @@ public class Crawler {
             Document doc = request(url, visited);
 
 
-                if (doc != null && deep <= 2) {
+                if (doc != null && deep <= 0) {
                     for (Element link : doc.select("a[href]")) {
                         String next_link = link.absUrl("href");
                         if (!visited.contains(next_link)) {
@@ -48,6 +59,12 @@ public class Crawler {
                 //vypis obsahu stranky
                 Output.text_output(doc);
 
+                //jazyk detector
+
+                System.out.println(language_detector(doc));
+
+                //prida medzi skontrolovane stranky
+
                 v.add(url);
 
                 return doc;
@@ -59,5 +76,27 @@ public class Crawler {
         }
 
     }
+
+    private String language_detector(Document doc){
+
+        try {
+
+            String text = doc.text();
+
+            com.cybozu.labs.langdetect.Detector detector = DetectorFactory.create();
+            detector.append(text);
+            String language = detector.detect();
+
+            return "Jazyk webovej stránky: " + language;
+
+        } catch (LangDetectException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return "Jazyk stranky sa nepodarilo rozpoznať.";
+    }
+
 }
 
