@@ -1,6 +1,6 @@
 package Jsoup_crawler;
 
-//trieda na ukladanie
+//trieda na ukladanie ano
 class Caller {
     private int deep;
     private String url;
