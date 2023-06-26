@@ -15,12 +15,7 @@ import java.util.Stack;
 public class Crawler {
 
     //metoda na prehladavanie podstranok
-<<<<<<< Updated upstream
     public void crawl(long deep, String url, ArrayList<String> visited) {
-=======
-    public static ArrayList<Document> crawl(int deep, String url, ArrayList<String> visited) {
-        ArrayList<Document> documents = new ArrayList<>();
->>>>>>> Stashed changes
         Stack<Caller> stack = new Stack<>();
         deep *= -1;
         System.out.println("HLBA JE: " + deep);
@@ -34,41 +29,28 @@ public class Crawler {
 
         while (!stack.isEmpty()) {
             Caller frame = stack.pop();
-            deep = frame.getDeep();
-            url = frame.getUrl();
+            deep = frame.deep();
+            url = frame.url();
 
             Document doc = request(url, visited);
 
-<<<<<<< Updated upstream
                 if (doc != null && deep <= -1) {
                     for (Element link : doc.select("a[href]")) {
                         String next_link = link.absUrl("href");
                         if (!visited.contains(next_link)) {
                             stack.push(new Caller(deep++, next_link));
                         }
-=======
-            if (doc != null && deep <= 2) {
-                documents.add(doc);
-
-                for (Element link : doc.select("a[href]")) {
-                    String next_link = link.absUrl("href");
-                    if (!visited.contains(next_link)) {
-                        stack.push(new Caller(deep + 1, next_link));
->>>>>>> Stashed changes
                     }
                 }
-            }
         }
-
-        return documents;
     }
 
-    private static Document request(String url, ArrayList<String> v) {
-        try {
+    //metoda na overenie, či stránku ide otvoriť
+    private Document request(String url, ArrayList<String> v){
+        try{
             Connection con = Jsoup.connect(url);
             Document doc = con.get();
 
-<<<<<<< Updated upstream
             if(con.response().statusMessage().equals("OK")){
 
                 //vypis obsahu stranky
@@ -76,18 +58,18 @@ public class Crawler {
 
                 //prida medzi skontrolovane stranky
 
-=======
-            if (con.response().statusMessage().equals("OK")) {
->>>>>>> Stashed changes
                 v.add(url);
+
                 return doc;
             }
             return null;
-        } catch (IOException e) {
+        }
+        catch (IOException e){
             return null;
         }catch (IllegalArgumentException e) {
             return null;
         }
+
     }
 
 
