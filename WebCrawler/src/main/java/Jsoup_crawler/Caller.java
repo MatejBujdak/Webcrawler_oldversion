@@ -1,6 +1,6 @@
 package Jsoup_crawler;
 
-class Caller {
+public class Caller {
     private long deep;
     private String url;
 
