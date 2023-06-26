@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 import java.util.ArrayList;
 
 import Jsoup_crawler.Crawler;
@@ -28,3 +29,5 @@ public class Main {
 
 
 }
+=======
+>>>>>>> Stashed changes
