@@ -10,13 +10,13 @@ public class Text_filter {
             char znak = text.charAt(i);
 
             if (znak == '<') {
-                if(first == false){
+                if(!first){
                     write = false;
                 }
             } else if(first && znak == ' '){
                 write = false;
             }else if (znak == '>') {
-                if(first == true) {
+                if(first) {
                     s += ": ";
                     first = false;
                 }

@@ -15,8 +15,10 @@ import java.util.Stack;
 public class Crawler {
 
     //metoda na prehladavanie podstranok
-    public void crawl(int deep, String url, ArrayList<String> visited) {
+    public void crawl(long deep, String url, ArrayList<String> visited) {
         Stack<Caller> stack = new Stack<>();
+        deep *= -1;
+        System.out.println("HLBA JE: " + deep);
         stack.push(new Caller(deep, url));
 
         try{
@@ -32,8 +34,7 @@ public class Crawler {
 
             Document doc = request(url, visited);
 
-
-                if (doc != null && deep <= 1) {
+                if (doc != null && deep <= -1) {
                     for (Element link : doc.select("a[href]")) {
                         String next_link = link.absUrl("href");
                         if (!visited.contains(next_link)) {
@@ -64,6 +65,8 @@ public class Crawler {
             return null;
         }
         catch (IOException e){
+            return null;
+        }catch (IllegalArgumentException e) {
             return null;
         }
 
