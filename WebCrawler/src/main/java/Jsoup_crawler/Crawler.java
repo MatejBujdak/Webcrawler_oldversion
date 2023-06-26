@@ -23,8 +23,6 @@ public class Crawler {
         DetectorFactory.loadProfile("C:\\Users\\Matej\\OneDrive\\Počítač\\Java_projekty\\Webcrawler\\WebCrawler\\language-detection-master\\language-detection-master\\profiles");
         } catch (LangDetectException e) {
             e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
         }
 
         while (!stack.isEmpty()) {
@@ -35,7 +33,7 @@ public class Crawler {
             Document doc = request(url, visited);
 
 
-                if (doc != null && deep <= 0) {
+                if (doc != null && deep <= 1) {
                     for (Element link : doc.select("a[href]")) {
                         String next_link = link.absUrl("href");
                         if (!visited.contains(next_link)) {
@@ -54,14 +52,8 @@ public class Crawler {
 
             if(con.response().statusMessage().equals("OK")){
 
-                System.out.println("URL: " + url);
-
                 //vypis obsahu stranky
-                Output.text_output(doc);
-
-                //jazyk detector
-
-                System.out.println(language_detector(doc));
+                Output.text_output(doc, url);
 
                 //prida medzi skontrolovane stranky
 
@@ -77,26 +69,6 @@ public class Crawler {
 
     }
 
-    private String language_detector(Document doc){
-
-        try {
-
-            String text = doc.text();
-
-            com.cybozu.labs.langdetect.Detector detector = DetectorFactory.create();
-            detector.append(text);
-            String language = detector.detect();
-
-            return "Jazyk webovej stránky: " + language;
-
-        } catch (LangDetectException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return "Jazyk stranky sa nepodarilo rozpoznať.";
-    }
 
 }
 
